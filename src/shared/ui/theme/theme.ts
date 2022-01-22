@@ -18,6 +18,12 @@ export const theme: DefaultTheme = {
       primary: colors.blue,
     },
   },
+  fontFamily: {
+    SFUITextRegular: 'SFUIText-Regular',
+    SFUITextMedium: 'SFUIText-Medium',
+    SFUITextSemibold: 'SFUIText-Semibold',
+    FactorAMedium: 'FactorA-Medium',
+  },
   border: (multiplier: number) => multiplier * defaultBorderMultiplier,
   spacing: (multiplier: number) => multiplier * defaultSpacingMultiplier,
 }
