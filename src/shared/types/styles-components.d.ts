@@ -1,9 +1,9 @@
 import 'styled-components'
 
 declare module 'styled-components' {
-  type TForegroundColor = 'primary'
+  type TForegroundColor = 'primary' | 'secondary' | 'accent'
 
-  export type TBackgroundColor = 'primary'
+  export type TBackgroundColor = 'primary' | 'accent'
   type TBorderColor = 'primary'
 
   type TFont =

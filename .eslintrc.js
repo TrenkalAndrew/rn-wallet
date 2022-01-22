@@ -13,22 +13,7 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.js', 'babel.config.js', 'metro.config.js'],
   plugins: ['@typescript-eslint', 'react', 'react-native', 'prettier'],
-  overrides: [
-    {
-      files: ['**/*.story.*'],
-      rules: {
-        'import/no-unresolved': 'off',
-        'react-native/no-inline-styles': 'off',
-      },
-    },
-    {
-      files: ['src/shared/api/**/*.ts'],
-      rules: {
-        'eslint-comments/no-unlimited-disable': 'off',
-        'eslint-comments/no-unused-disable': 'off',
-      },
-    },
-  ],
+  overrides: [{ files: ['*.tsx'], rules: { 'no-undef': 'off' } }],
   settings: {
     react: {
       pragma: 'React',
@@ -54,4 +39,4 @@ module.exports = {
     quotes: ['error', 'single'],
     'no-shadow': 'off',
   },
-};
+}
