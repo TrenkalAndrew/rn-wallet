@@ -4,18 +4,22 @@ const defaultBorderMultiplier = 4
 const defaultSpacingMultiplier = 8
 
 const colors = {
-  blue: '#151c29',
+  darkBlue: '#151c29',
   white: '#FFFFFF',
-  grey: '#F8F8F8',
+  grey: '#a3a3b2',
+  blue: '#44aff6',
 }
 
 export const theme: DefaultTheme = {
   palette: {
     foreground: {
       primary: colors.white,
+      secondary: colors.grey,
+      accent: colors.blue,
     },
     background: {
-      primary: colors.blue,
+      primary: colors.darkBlue,
+      accent: colors.blue,
     },
   },
   fontFamily: {
