@@ -52,7 +52,7 @@ export const useHeaderAnimation = ({
     const scale = interpolate(
       offsetY.value,
       [startAnimationValue, maxScrollAnimationValue],
-      [1, 1.2],
+      [1, 1.35],
       Extrapolate.CLAMP,
     )
 
