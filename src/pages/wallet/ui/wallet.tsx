@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react'
 import { FlatList, ListRenderItem } from 'react-native'
 
-import { Typography } from '@shared/ui/atoms'
+import { Divider } from '@shared/ui/atoms'
 import { DefaultPageTemplate } from '@shared/ui/templates'
 import { useTheme } from '@shared/ui/theme'
-import { Header } from '@shared/ui/molecules'
+import { Header, WalletItem } from '@shared/ui/molecules'
 import { useHeaderAnimation } from '@shared/lib/hooks'
 
 import { mocks } from './mocks'
@@ -15,10 +15,11 @@ type TWalletProps = { header: string }
 
 export const Wallet = ({ header }: TWalletProps) => {
   const theme = useTheme()
-  const { offsetY, onScroll, ListHeaderComponent } = useHeaderAnimation(header)
+  const { offsetY, onScroll, ListHeaderComponent, scrollIndicatorOffset } =
+    useHeaderAnimation({ headerTitle: header })
 
   const renderItem: ListRenderItem<string> = useCallback(
-    ({ item }) => <Typography>{item}</Typography>,
+    ({ item }) => <WalletItem title={item} />,
     [],
   )
 
@@ -31,10 +32,12 @@ export const Wallet = ({ header }: TWalletProps) => {
         data={mocks}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
+        ItemSeparatorComponent={Divider}
         initialNumToRender={30}
-        maxToRenderPerBatch={30}
+        maxToRenderPerBatch={50}
         windowSize={5}
         onScroll={onScroll}
+        scrollIndicatorInsets={{ top: scrollIndicatorOffset }}
       />
     </DefaultPageTemplate>
   )
