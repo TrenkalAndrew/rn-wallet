@@ -16,6 +16,7 @@ import Animated, {
 import { Typography } from '@shared/ui/atoms'
 import { DefaultPageTemplate } from '@shared/ui/templates'
 import { useTheme, styled } from '@shared/ui/theme'
+import { Header } from '@shared/ui/molecules'
 
 import { mocks } from './mocks'
 
@@ -23,6 +24,8 @@ const AnimatedTypography = Animated.createAnimatedComponent(Typography)
 
 const StyledAnimatedTypography = styled(AnimatedTypography)`
   align-self: flex-start;
+  padding-top: ${({ theme }) => theme.spacing(1.25)}px;
+  padding-bottom: ${({ theme }) => theme.spacing(2.5)}px;
 `
 
 const keyExtractor = (item: string, index: number) => item + index
@@ -90,6 +93,7 @@ export const Wallet = ({ header }: TWalletProps) => {
 
   return (
     <DefaultPageTemplate>
+      <Header title={header} offsetY={offsetY} />
       <FlatList
         ListHeaderComponent={ListHeaderComponent}
         contentContainerStyle={{ padding: theme.spacing(2) }}

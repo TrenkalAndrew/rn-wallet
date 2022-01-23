@@ -19,6 +19,7 @@ export const theme: DefaultTheme = {
     },
     background: {
       primary: colors.darkBlue,
+      secondary: colors.grey,
       accent: colors.blue,
     },
   },
