@@ -56,7 +56,7 @@ export const useHeaderAnimation = ({
     )
 
     runOnJS(setScrollIndicatorOffset)(
-      offsetY.value >= 10 ? initialHeaderWidth.value : 0,
+      offsetY.value >= endAnimationValue ? initialHeaderWidth.value : 0,
     )
 
     const headerWidth = initialHeaderWidth.value
