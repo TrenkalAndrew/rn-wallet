@@ -37,14 +37,15 @@ export const useHeaderAnimation = ({
   endAnimationValue = 10,
 }: TUseHeaderAnimation) => {
   const offsetY = useSharedValue(0)
-  const initialHeaderWidth = useSharedValue(0)
+  const initialHeaderHeight = useSharedValue(0)
   const [scrollIndicatorOffset, setScrollIndicatorOffset] = useState(0)
+  const [hasScrollToEnd, setScrollEnd] = useState(false)
 
   const onLayout = useCallback(
     (event: LayoutChangeEvent) => {
-      initialHeaderWidth.value = event.nativeEvent.layout.width
+      initialHeaderHeight.value = event.nativeEvent.layout.height
     },
-    [initialHeaderWidth],
+    [initialHeaderHeight],
   )
 
   const typographyStyles = useAnimatedStyle(() => {
@@ -56,11 +57,11 @@ export const useHeaderAnimation = ({
     )
 
     runOnJS(setScrollIndicatorOffset)(
-      offsetY.value >= endAnimationValue ? initialHeaderWidth.value : 0,
+      offsetY.value >= endAnimationValue ? initialHeaderHeight.value : 0,
     )
 
-    const headerWidth = initialHeaderWidth.value
-    const translateX = (headerWidth * scale - headerWidth) / 2
+    const headerHeight = initialHeaderHeight.value
+    const translateX = (headerHeight * scale - headerHeight) / 2
 
     return {
       transform: [
@@ -80,7 +81,13 @@ export const useHeaderAnimation = ({
 
   const onScroll = useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      offsetY.value = event.nativeEvent.contentOffset.y
+      const currentOffsetY = event.nativeEvent.contentOffset.y
+      const measurementHeight = event.nativeEvent.layoutMeasurement.height
+      const contentSizeHeight = event.nativeEvent.contentSize.height
+
+      offsetY.value = currentOffsetY
+
+      setScrollEnd(contentSizeHeight <= currentOffsetY + measurementHeight)
     },
     [offsetY],
   )
@@ -98,5 +105,11 @@ export const useHeaderAnimation = ({
     [headerTitle, onLayout, typographyStyles],
   )
 
-  return { offsetY, onScroll, ListHeaderComponent, scrollIndicatorOffset }
+  return {
+    offsetY,
+    onScroll,
+    ListHeaderComponent,
+    scrollIndicatorOffset,
+    hasScrollToEnd,
+  }
 }
