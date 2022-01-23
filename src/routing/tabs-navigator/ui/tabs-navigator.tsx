@@ -7,7 +7,7 @@ import { Typography } from '@shared/ui/atoms'
 import { Icons } from '@shared/ui/icons'
 import { Exchange } from '@pages/exchange'
 import { Profile } from '@pages/profile'
-import { Wallet } from '@pages/wallet'
+import { WalletConnector } from '@pages/wallet'
 
 import { TTabsParamList } from '../types'
 
@@ -85,7 +85,7 @@ export const TabNavigator = () => {
         }
       }}
     >
-      <Tab.Screen name="Wallet" component={Wallet} />
+      <Tab.Screen name="Wallet" component={WalletConnector} />
       <Tab.Screen name="Exchange" component={Exchange} />
       <Tab.Screen name="Settings" component={Profile} />
     </Tab.Navigator>

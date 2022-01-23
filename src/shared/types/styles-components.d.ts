@@ -3,7 +3,7 @@ import 'styled-components'
 declare module 'styled-components' {
   type TForegroundColor = 'primary' | 'secondary' | 'accent'
 
-  export type TBackgroundColor = 'primary' | 'accent'
+  export type TBackgroundColor = 'primary' | 'secondary' | 'accent'
   type TBorderColor = 'primary'
 
   type TFont =

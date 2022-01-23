@@ -1,1 +1,1 @@
-export { Wallet } from './ui'
+export { WalletConnector } from './ui'
