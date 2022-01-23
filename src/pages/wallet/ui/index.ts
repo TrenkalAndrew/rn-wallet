@@ -1,1 +1,1 @@
-export { Wallet } from './wallet'
+export { WalletConnector } from './wallet-connector'
