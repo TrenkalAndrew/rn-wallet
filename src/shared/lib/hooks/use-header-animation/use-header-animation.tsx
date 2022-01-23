@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import {
   LayoutChangeEvent,
   NativeScrollEvent,
@@ -9,6 +9,7 @@ import Animated, {
   Extrapolate,
   useAnimatedStyle,
   interpolate,
+  runOnJS,
 } from 'react-native-reanimated'
 
 import { Typography } from '@shared/ui/atoms'
@@ -22,27 +23,45 @@ const StyledAnimatedTypography = styled(AnimatedTypography)`
   padding-bottom: ${({ theme }) => theme.spacing(2.5)}px;
 `
 
-export const useHeaderAnimation = (headerTitle: string) => {
+const maxScrollAnimationValue = -250
+
+type TUseHeaderAnimation = {
+  headerTitle: string
+  startAnimationValue?: number
+  endAnimationValue?: number
+}
+
+export const useHeaderAnimation = ({
+  headerTitle,
+  startAnimationValue = 0,
+  endAnimationValue = 10,
+}: TUseHeaderAnimation) => {
   const offsetY = useSharedValue(0)
-  const initialHeaderWidth = useSharedValue(0)
+  const initialHeaderHeight = useSharedValue(0)
+  const [scrollIndicatorOffset, setScrollIndicatorOffset] = useState(0)
+  const [hasScrollToEnd, setScrollEnd] = useState(false)
 
   const onLayout = useCallback(
     (event: LayoutChangeEvent) => {
-      initialHeaderWidth.value = event.nativeEvent.layout.width
+      initialHeaderHeight.value = event.nativeEvent.layout.height
     },
-    [initialHeaderWidth],
+    [initialHeaderHeight],
   )
 
   const typographyStyles = useAnimatedStyle(() => {
     const scale = interpolate(
       offsetY.value,
-      [0, -250],
+      [startAnimationValue, maxScrollAnimationValue],
       [1, 1.2],
       Extrapolate.CLAMP,
     )
 
-    const headerWidth = initialHeaderWidth.value
-    const translateX = (headerWidth * scale - headerWidth) / 2
+    runOnJS(setScrollIndicatorOffset)(
+      offsetY.value >= endAnimationValue ? initialHeaderHeight.value : 0,
+    )
+
+    const headerHeight = initialHeaderHeight.value
+    const translateX = (headerHeight * scale - headerHeight) / 2
 
     return {
       transform: [
@@ -51,13 +70,24 @@ export const useHeaderAnimation = (headerTitle: string) => {
         },
         { translateX },
       ],
-      opacity: interpolate(offsetY.value, [0, 10], [1, 0], Extrapolate.CLAMP),
+      opacity: interpolate(
+        offsetY.value,
+        [startAnimationValue, endAnimationValue],
+        [1, 0],
+        Extrapolate.CLAMP,
+      ),
     }
-  })
+  }, [startAnimationValue, endAnimationValue])
 
   const onScroll = useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      offsetY.value = event.nativeEvent.contentOffset.y
+      const currentOffsetY = event.nativeEvent.contentOffset.y
+      const measurementHeight = event.nativeEvent.layoutMeasurement.height
+      const contentSizeHeight = event.nativeEvent.contentSize.height
+
+      offsetY.value = currentOffsetY
+
+      setScrollEnd(contentSizeHeight <= currentOffsetY + measurementHeight)
     },
     [offsetY],
   )
@@ -75,5 +105,11 @@ export const useHeaderAnimation = (headerTitle: string) => {
     [headerTitle, onLayout, typographyStyles],
   )
 
-  return { offsetY, onScroll, ListHeaderComponent }
+  return {
+    offsetY,
+    onScroll,
+    ListHeaderComponent,
+    scrollIndicatorOffset,
+    hasScrollToEnd,
+  }
 }
