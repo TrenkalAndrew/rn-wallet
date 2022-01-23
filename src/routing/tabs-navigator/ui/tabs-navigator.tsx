@@ -6,6 +6,8 @@ import { LabelPosition } from '@react-navigation/bottom-tabs/lib/typescript/src/
 import { css, styled, useTheme } from '@shared/ui/theme'
 import { Typography } from '@shared/ui/atoms'
 import { Icons } from '@shared/ui/icons'
+import { Exchange } from '@pages/exchange'
+import { Profile } from '@pages/profile'
 
 import { TTabsParamList } from '../types'
 
@@ -49,6 +51,9 @@ export const TabNavigator = () => {
 
   return (
     <Tab.Navigator
+      sceneContainerStyle={{
+        backgroundColor: theme.palette.background.primary,
+      }}
       screenOptions={({ route }) => {
         const { label, icon: Icon } = tabs[route.name]
         return {
@@ -75,13 +80,14 @@ export const TabNavigator = () => {
             elevation: 0,
             shadowOpacity: 0,
             backgroundColor: theme.palette.background.primary,
+            borderTopWidth: 0,
           },
         }
       }}
     >
       <Tab.Screen name="Wallet" component={View} />
-      <Tab.Screen name="Exchange" component={View} />
-      <Tab.Screen name="Settings" component={View} />
+      <Tab.Screen name="Exchange" component={Exchange} />
+      <Tab.Screen name="Settings" component={Profile} />
     </Tab.Navigator>
   )
 }
